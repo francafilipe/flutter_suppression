@@ -21,8 +21,8 @@ k = numpy.array([0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7
 
 # Geometric and Inertial parameters
 freq_h = 1.54               # [Hz] Natural Frequency of the Heave Motion
-freq_a = 1.54               # [Hz] Natural Frequency of the Pitch Motion
-freq_b = 1.54               # [Hz] Natural Frequency of the Flap Deflection
+freq_a = 3.26               # [Hz] Natural Frequency of the Pitch Motion
+freq_b = 8.01               # [Hz] Natural Frequency of the Flap Deflection
 
 omega_h = freq_h*2*pi       # [rad/s] Natural Frequency of the Heave Motion
 omega_a = freq_a*2*pi       # [rad/s] Natural Frequency of the Pitch Motion
