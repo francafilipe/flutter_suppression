@@ -1,7 +1,7 @@
 # Dependencies
 from math import pi
 import parameters as params
-from numpy import cos, sqrt, array, complex, zeros, ones, linalg, conjugate, dot
+from numpy import cos, sqrt, array, complex, zeros, ones, linalg, conjugate, dot, real, imag
 
 def theodorsen(k):
     # Values of Theodordsen function parameters
@@ -45,17 +45,20 @@ def theodorsen(k):
 
 
 def roger_RFA(aeroFunction,k,gamma):
-    Aap = zeros((3+params.nLAG,params.nDOF,params.nDOF), dtype='complex') # this is the 3D matrix containing all matrices of the RFA approximation
-    z = aeroFunction(k)
     j = complex(0,1)
+    z = aeroFunction(k)
+    B = -array([ones(len(k)), j*k, -k**2, j*k/(j*k+gamma[0]), j*k/(j*k+gamma[1]), j*k/(j*k+gamma[2]), j*k/(j*k+gamma[3])]).T
+    Q = zeros(len(k))
+    RFA = zeros((3+params.nLAG,params.nDOF,params.nDOF), dtype='complex') # this is the 3D matrix containing all matrices of the RFA approximation
 
-    AIC = zeros(len(k))
+    sumB = dot(real(B).T,real(B)) + dot(imag(B).T,imag(B))
+
     for r in range(params.nDOF):
         for s in range(params.nDOF):
-            AIC = z[:,r,s][:,None]
-            F = array([ones(len(k)), j*k, -k**2, 1/(j*k+gamma[0]), 1/(j*k+gamma[1]), 1/(j*k+gamma[2]), 1/(j*k+gamma[3])]).T
+            Q = z[:,r,s][:,None]
+            sumQB = dot(real(B).T,real(Q)) + dot(imag(B).T,imag(Q))
 
-            aij = dot(linalg.inv(dot(F.T,conjugate(F))+dot(conjugate(F.T),F)),(dot(conjugate(F.T),conjugate(AIC))+dot(F.T,conjugate(AIC))))
-            Aap[:,r,s] = aij[:,0]
+            aij = - dot(linalg.inv(sumB),sumQB)
+            RFA[:,r,s] = aij[:,0]
 
-    return Aap
+    return RFA

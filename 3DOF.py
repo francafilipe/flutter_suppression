@@ -8,8 +8,8 @@ def model_nocontrol(t,x,k):
     import aerodynamics
 
     # Call Roger RFA for the specific aerodynamic modelling or data input
-    Aap = aerodynamics.roger_RFA(aerodynamics.theodorsen,k,parameters.gamma)
-    #print(Aap)
+    A = aerodynamics.roger_RFA(aerodynamics.theodorsen,k,parameters.gamma)
+    print(A)
 
     return None
 
