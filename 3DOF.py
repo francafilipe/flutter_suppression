@@ -1,17 +1,32 @@
 # Importing dependencies
+from numpy.linalg.linalg import inv
 from scipy import *
 from numpy import *
 
 def model_nocontrol(t,x,k):
     # Importing the model's parameters
-    import parameters
+    import parameters as params
     import aerodynamics
 
     # Call Roger RFA for the specific aerodynamic modelling or data input
-    A = aerodynamics.roger_RFA(aerodynamics.theodorsen,k,parameters.gamma)
-    print(A)
+    RFA = aerodynamics.roger_RFA(aerodynamics.theodorsen,k,params.gamma)
 
-    return None
+    # State-space model matrices
+    mu = params.rho*(params.b**2)*(params.Voo**2)
+    M = params.M - mu*RFA[2,:,:]*(params.b/params.Voo)**2
+    B = -mu*RFA[1,:,:]*(params.b/params.Voo)
+    K = params.K - mu*RFA[0,:,:]
+    A = mu*RFA[3:params.nLAG+3,:,:]
+
+    # state matrix
+    state = zeros((2*params.nDOF+params.nDOF*params.nLAG,2*params.nDOF+params.nDOF*params.nLAG))
+    state[:,params.nDOF:2*params.nDOF] = 1                                                                                                                  # first column
+    state[params.nDOF:2*params.nDOF,:] = concatenate((inv(M)*B, inv(M)*K, inv(M)*A[0,:,:], inv(M)*A[1,:,:], inv(M)*A[2,:,:], inv(M)*A[3,:,:]),axis=1)       # second row 
+    for nlag in range(params.nLAG):
+        n = params.nDOF
+        state[(2+nlag)*n:(3+nlag)*n,(2+nlag)*n:(3+nlag)*n] = -(params.Voo/params.b)*params.gamma[nlag]*identity(3)
+
+    return state*x
 
 from math import pi
 
