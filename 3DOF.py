@@ -20,13 +20,14 @@ def model_nocontrol(t,x,k):
 
     # state matrix
     state = zeros((2*params.nDOF+params.nDOF*params.nLAG,2*params.nDOF+params.nDOF*params.nLAG))
-    state[:,params.nDOF:2*params.nDOF] = 1                                                                                                                  # first column
-    state[params.nDOF:2*params.nDOF,:] = concatenate((inv(M)*B, inv(M)*K, inv(M)*A[0,:,:], inv(M)*A[1,:,:], inv(M)*A[2,:,:], inv(M)*A[3,:,:]),axis=1)       # second row 
+    state[0:params.nDOF,params.nDOF:2*params.nDOF] = identity(params.nDOF)                                                                                  # first row (identity in the nDOF-th position)                                                                                         # first column
+    state[params.nDOF:2*params.nDOF,:] = concatenate((inv(M)*B, inv(M)*K, inv(M)*A[0,:,:], inv(M)*A[1,:,:], inv(M)*A[2,:,:], inv(M)*A[3,:,:]),axis=1)       # second row (model equation of motion)
     for nlag in range(params.nLAG):
         n = params.nDOF
-        state[(2+nlag)*n:(3+nlag)*n,(2+nlag)*n:(3+nlag)*n] = -(params.Voo/params.b)*params.gamma[nlag]*identity(3)
+        state[(2+nlag)*n:(3+nlag)*n,params.nDOF:2*params.nDOF] = identity(params.nDOF)                                  # second column (identities starting after second row)
+        state[(2+nlag)*n:(3+nlag)*n,(2+nlag)*n:(3+nlag)*n] = -(params.Voo/params.b)*params.gamma[nlag]*identity(3)      # lag parameters
 
-    return state*x
+    return None
 
 from math import pi
 
