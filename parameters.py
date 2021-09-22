@@ -14,7 +14,7 @@ nDOF = 3                    # [-] Number of DOFs
 nLAG = 4                    # [-] Number of lag aerodynamic terms
 gamma = numpy.array([0.2, 0.4, 0.6, 0.8]) # [-] Aerodynamic lag term poles (RFA adjustment parameters)
 
-Voo = 10                    # [m/s] Flight speed
+Voo = 7.5                    # [m/s] Flight speed
 k = numpy.array([0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0])
                             # [-] Set of reduced frequencies
 
