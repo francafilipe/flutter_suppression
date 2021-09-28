@@ -13,16 +13,17 @@ def model_nocontrol(x,t,k):
     RFA = aerodynamics.roger_RFA(aerodynamics.theodorsen,k,params.gamma)
 
     # State-space model matrices
-    mu = params.rho*(params.b**2)*(params.Voo**2)
-    M = params.M - mu*RFA[2,:,:]*(params.b/params.Voo)**2
-    B = -mu*RFA[1,:,:]*(params.b/params.Voo)
-    K = params.K - mu*RFA[0,:,:]
-    A = mu*RFA[3:params.nLAG+3,:,:]
-
+    q = 0.5*params.rho*(params.Voo**2)
+    M = params.M - 0.5*params.rho*(params.b**2)*RFA[2,:,:]
+    B = -0.5*params.rho*params.b*params.Voo*RFA[1,:,:]
+    K = params.K - q*RFA[0,:,:]
+    A = q*RFA[3:params.nLAG+3,:,:]
+    print(params.K,'\n',K)
+    print(RFA[0,:,:])
     # state matrix
     state = zeros((2*params.nDOF+params.nDOF*params.nLAG,2*params.nDOF+params.nDOF*params.nLAG))                                                            # first column
     state[0:params.nDOF,params.nDOF:2*params.nDOF] = identity(params.nDOF)                                                                                  # first row (identity in the nDOF-th position)
-    state[params.nDOF:2*params.nDOF,:] = concatenate((-dot(inv(M),B), -dot(inv(M),K), dot(inv(M),A[0,:,:]), dot(inv(M),A[1,:,:]), dot(inv(M),A[2,:,:]), dot(inv(M),A[3,:,:])),axis=1)       # second row (model equation of motion)
+    state[params.nDOF:2*params.nDOF,:] = concatenate((-dot(inv(M),K), -dot(inv(M),B), dot(inv(M),A[0,:,:]), dot(inv(M),A[1,:,:]), dot(inv(M),A[2,:,:]), dot(inv(M),A[3,:,:])),axis=1)       # second row (model equation of motion)
     for nlag in range(params.nLAG):
         n = params.nDOF
         state[(2+nlag)*n:(3+nlag)*n,params.nDOF:2*params.nDOF] = identity(params.nDOF)                                  # second column (identities starting after second row)
@@ -34,7 +35,7 @@ def model_nocontrol(x,t,k):
 from math import pi
 
 # Define time range and initial conditions
-t = arange(0,11,1)
+t = arange(0,10,0.001)
 x = zeros(18)
 x[1] = 0.1
 
