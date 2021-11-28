@@ -14,7 +14,7 @@ def system(x,t,matrices,control):
     u = control                     # input (or control) value
 
     # State Space equation for the system
-    xp = dot(A,x)+dot(B,u)
+    xp = dot(A,x) #+dot(B,u)
 
     return xp
 
