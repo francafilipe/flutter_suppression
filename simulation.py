@@ -15,7 +15,7 @@ k  = int(T/Ts)                      # [-] Sampling indice (last value)
 x = zeros((18,k))                   # State Vector
 input = zeros(k)                    # Input (Control Action) Vector
 
-x[0,0] = 0.261799                   # [rad] Initial Condition in pitch angle state (15°)
+x[2,0] = 0.261799                   # [rad] Initial Condition in pitch angle state (15°)
 
 # Get state space LTI system matrices
 matrices = ss_matrices(Voo)
@@ -26,7 +26,7 @@ for i in range(k-1):
 
     # Evolving the system dynamics
     x0 = x[:,i]                     # Initial condition
-    y  = odeint(system,x0,[0.0, Ts],args=(matrices,input,)) # Run integral solver for the dyanmic solution
+    y  = odeint(system,x0,[0.0, Ts],args=(matrices,input[i],)) # Run integral solver for the dyanmic solution
     x[:,i+1] = y[-1]
 
 

@@ -1,5 +1,7 @@
 # Importing Dependencies
 from math import pi
+
+import numpy
 import parameters as params
 from numpy import cos, sqrt, array, complex, zeros, ones, linalg, conjugate, dot, real, imag, identity, concatenate
 from numpy.linalg.linalg import inv
@@ -14,8 +16,7 @@ def system(x,t,matrices,control):
     u = control                     # input (or control) value
 
     # State Space equation for the system
-    xp = dot(A,x) #+dot(B,u)
-
+    xp = dot(A,x)+dot(B,u)
     return xp
 
 
@@ -42,10 +43,15 @@ def ss_matrices(Voo):
         state[(2+nlag)*n:(3+nlag)*n,(2+nlag)*n:(3+nlag)*n] = -(Voo/params.b)*params.gamma[nlag]*identity(3)      # lag parameters
 
     # input (or control) matrix
-    input = 0
+    input = zeros((2*params.nDOF+params.nDOF*params.nLAG))
+    Ba = numpy.array([0, 0, params.rb*(params.omega_b**2)])
+    input[params.nDOF:2*params.nDOF] = -dot(inv(M),Ba)
 
     # output matrix
-    output = 0
+    output = zeros((2*params.nDOF+params.nDOF*params.nLAG,2*params.nDOF+params.nDOF*params.nLAG))
+    for k in range(2*params.nDOF):
+        output[k,k] = 1
+    print(output)
 
     # feedforward matrix
     feedforward = 0
