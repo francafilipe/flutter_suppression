@@ -1,7 +1,6 @@
 # Importing dependencies
 import matplotlib.pyplot as plt
 from model import *
-from control import ss
 from scipy.signal import cont2discrete
 from scipy.integrate import odeint 
 from numpy import *
@@ -24,14 +23,14 @@ cont_sys = ss_matrices(Voo)         # Get continuous state space matrices
 disc_sys = cont2discrete((cont_sys.A,cont_sys.B,cont_sys.C,cont_sys.D), dt, method='zoh', alpha=None)   
                                     # Sampling of state space matrices for discrete system 
 
-for i in range(k-1):
-    # Define the control action value
-    input[i] = 0
+#for i in range(k-1):
+# Define the control action value
+input[0] = 0
 
-    # Evolving the system dynamics
-    x0 = x[:,i]                     # Initial condition
-    y  = odeint(system,x0,[0.0, dt],args=(cont_sys,input[i],)) # Run integral solver for the dyanmic solution
-    x[:,i+1] = y[-1]
+# Evolving the system dynamics
+x0 = x[:,0]                     # Initial condition
+y  = odeint(system,x0,arange(0,T,dt),args=(disc_sys,input[0],)) # Run integral solver for the dyanmic solution
+x = y[-1]
 
 
 # Show Results
