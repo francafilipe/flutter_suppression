@@ -1,19 +1,19 @@
 # Importing Dependencies
 from math import pi
-
+from control import ss
 import numpy
 import parameters as params
 from numpy import cos, sqrt, array, complex, zeros, ones, linalg, conjugate, dot, real, imag, identity, concatenate
 from numpy.linalg.linalg import inv
 
 
-def system(x,t,matrices,control):
+def system(x,t,matrices,input):
     # Description of the function
 
     # Input variables
-    A = matrices['A']               # state (or system) matrix
-    B = matrices['B']               # input (or control) matrix
-    u = control                     # input (or control) value
+    A = matrices.A                  # state (or system) matrix
+    B = matrices.B.flatten()        # input (or control) matrix
+    u = input                       # input (or control) value
 
     # State Space equation for the system
     xp = dot(A,x)+dot(B,u)
@@ -43,25 +43,19 @@ def ss_matrices(Voo):
         state[(2+nlag)*n:(3+nlag)*n,(2+nlag)*n:(3+nlag)*n] = -(Voo/params.b)*params.gamma[nlag]*identity(3)      # lag parameters
 
     # input (or control) matrix
-    input = zeros((2*params.nDOF+params.nDOF*params.nLAG))
+    input = zeros((2*params.nDOF+params.nDOF*params.nLAG,1))
     Ba = numpy.array([0, 0, params.rb*(params.omega_b**2)])
-    input[params.nDOF:2*params.nDOF] = -dot(inv(M),Ba)
+    input[params.nDOF:2*params.nDOF,0] = -dot(inv(M),Ba)
 
     # output matrix
-    output = zeros((2*params.nDOF+params.nDOF*params.nLAG,2*params.nDOF+params.nDOF*params.nLAG))
+    output = zeros((2*params.nDOF,2*params.nDOF+params.nDOF*params.nLAG))
     for k in range(2*params.nDOF):
         output[k,k] = 1
-    print(output)
 
     # feedforward matrix
-    feedforward = 0
+    feedforward = zeros((2*params.nDOF,1))
 
-    matrices = {
-        "A": state,
-        "B": input,
-        "C": output,
-        "D": feedforward,
-    }
+    matrices = ss(state,input,output,feedforward)
 
     return matrices
 
