@@ -11,8 +11,8 @@ def system(x,t,matrices,input):
     # Description of the function
 
     # Input variables
-    A = matrices[0]                  # state (or system) matrix
-    B = matrices[1].flatten()        # input (or control) matrix
+    A = matrices.A                  # state (or system) matrix
+    B = matrices.B.flatten()        # input (or control) matrix
     u = input                       # input (or control) value
 
     # State Space equation for the system
