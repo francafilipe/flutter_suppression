@@ -44,7 +44,7 @@ def ss_matrices(Voo):
 
     # input (or control) matrix
     input = zeros((2*params.nDOF+params.nDOF*params.nLAG,1))
-    Ba = numpy.array([0, 0, params.rb*(params.omega_b**2)])
+    Ba = numpy.array([0, 0, (params.rb**2)*(params.omega_b**2)])
     input[params.nDOF:2*params.nDOF,0] = -dot(inv(M),Ba)
 
     # output matrix
