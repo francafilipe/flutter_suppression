@@ -2,6 +2,7 @@
 import matplotlib.pyplot as plt
 from numpy.linalg import eig, matrix_rank
 from model import *
+from controller import *
 from control import lqr, ctrb, ss
 from control.matlab import initial
 from scipy.integrate import odeint, solve_ivp
@@ -10,6 +11,7 @@ from math import pi
 
 # Simulation and Modelling parameters and conditions
 Voo = 8.3                           # [m/s] Flight speed
+V_flutter = 8.3                     # [m/s] Flutter speed
 
 dt = 1e-3                           # [sec] Sampling Time
 T  = 5                              # [sec] Simulation total time
@@ -25,10 +27,10 @@ cont_sys = ss_matrices(Voo)         # Get continuous state space matrices
 disc_sys = cont_sys.sample(dt, method='zoh', alpha=None)   # Sampling of state space matrices for discrete system 
 
 # Calculate Control Law
-Q = identity((18))
-R = 1
-K, S, E = lqr(cont_sys.A,cont_sys.B, Q, R)
+K, S, E = LQR_(V_flutter,dt)
 
+# Evaluate MF dynamics
+y, t = MF_analysis(Voo,cont_sys,K,x[:,0],plot=True)
 
 for i in range(k-1):
     # Define the control action value
