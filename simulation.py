@@ -4,7 +4,7 @@ from numpy.linalg import eig, matrix_rank
 from model import *
 from control import lqr, ctrb, ss
 from control.matlab import initial
-from scipy.integrate import odeint 
+from scipy.integrate import odeint, solve_ivp
 from numpy import *
 from math import pi
 
@@ -35,8 +35,8 @@ for i in range(k-1):
     input[i] = -dot(K,x[:,i])
     # Evolving the system dynamics
     x0 = x[:,i]                     # Initial condition
-    y  = odeint(system,x0,[0.0, dt],args=(cont_sys,input[i],)) # Run integral solver for the dyanmic solution
-    x[:,i+1] = y[-1]
+    sol  = solve_ivp(system,[0.0, dt],x0,args=(cont_sys,input[i],),method='RK45') # Run integral solver for the dyanmic solution
+    x[:,i+1] = sol.y[:,-1]
 
 
 # Show Results

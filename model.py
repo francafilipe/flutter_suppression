@@ -7,7 +7,7 @@ from numpy import cos, sqrt, array, complex, zeros, ones, linalg, conjugate, dot
 from numpy.linalg.linalg import inv
 
 
-def system(x,t,matrices,input):
+def system(t,x,matrices,input):
     # Description of the function
 
     # Input variables
