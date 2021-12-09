@@ -11,12 +11,14 @@ def system(x,t,matrices,input):
     # Description of the function
 
     # Input variables
+    xp = zeros((18,))               # state derivatives vector initialize
     A = matrices.A                  # state (or system) matrix
     B = matrices.B.flatten()        # input (or control) matrix
     u = input                       # input (or control) value
 
     # State Space equation for the system
-    xp = dot(A,x)+dot(B,u)
+    xp[:] = dot(A,x)+dot(B,u)
+    
     return xp
 
 
