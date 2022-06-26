@@ -10,7 +10,7 @@ from numpy import *
 from math import pi
 
 # Simulation and Modelling parameters and conditions
-Voo = 8.3                           # [m/s] Flight speed
+Voo = 8                           # [m/s] Flight speed
 V_flutter = 8.3                     # [m/s] Flutter speed
 
 dt = 1e-3                           # [sec] Sampling Time
@@ -30,11 +30,11 @@ disc_sys = cont_sys.sample(dt, method='zoh', alpha=None)   # Sampling of state s
 K, S, E = LQR_(V_flutter,dt)
 
 # Evaluate MF dynamics
-y, t = MF_analysis(Voo,cont_sys,K,x[:,0],plot=True)
+y, t = MF_analysis(Voo,cont_sys,K,x[:,0],plot=False)
 
 for i in range(k-1):
     # Define the control action value
-    input[i] = -dot(K,x[:,i])
+    input[i] = 0.1#-dot(K,x[:,i])
     # Evolving the system dynamics
     x0 = x[:,i]                     # Initial condition
     sol  = solve_ivp(system,[0.0, dt],x0,args=(cont_sys,input[i],),method='RK45') # Run integral solver for the dyanmic solution
@@ -53,7 +53,7 @@ plots[2,1].plot(arange(0, T, dt), x[5,:])
 
 plt.suptitle('State Variables Response', fontweight='bold')
 plots[0,0].set_ylabel('h [m]'); plots[1,0].set_ylabel('\N{GREEK SMALL LETTER ALPHA} [rad]'); plots[2,0].set_ylabel('\N{GREEK SMALL LETTER BETA} [rad]')
-plots[0,1].set_ylabel('h [m]'); plots[1,1].set_ylabel('alpha [rad/s]'); plots[2,1].set_ylabel('delta [rad/s]')
+plots[0,1].set_ylabel('h [m/s]'); plots[1,1].set_ylabel('\N{GREEK SMALL LETTER ALPHA} [rad/s]'); plots[2,1].set_ylabel('\N{GREEK SMALL LETTER BETA} [rad/s]')
 plots[2,0].set_xlabel('t [sec]'); plots[2,1].set_xlabel('t [sec]')
 
 plt.show()

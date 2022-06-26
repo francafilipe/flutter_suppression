@@ -65,6 +65,7 @@ def ss_matrices(Voo):
 def roger_RFA(aeroFunction,k,gamma):
     j = complex(0,1)
     z = aeroFunction(k)
+    print(z)
     B = -array([ones(len(k)), j*k, -k**2, j*k/(j*k+gamma[0]), j*k/(j*k+gamma[1]), j*k/(j*k+gamma[2]), j*k/(j*k+gamma[3])]).T
     Q = zeros(len(k))
     RFA = zeros((3+params.nLAG,params.nDOF,params.nDOF), dtype='complex') # this is the 3D matrix containing all matrices of the RallFA approximation
