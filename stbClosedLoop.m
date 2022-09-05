@@ -7,7 +7,7 @@ SetPaths;
 %% ANALYSIS CNODITIONS
 % Define flight conditions | analysis points
 fltcond.rho = 0.000044256;          % [lb/in3]  air density
-Voo = [115];       % [in/s]    undisturbed flow speed
+Voo = [1165];       % [in/s]    undisturbed flow speed
 % Voo = [100 1165 1235 1300];
 nVoo = length(Voo);
 
@@ -63,12 +63,10 @@ for i=1:nVoo
         VCLF_poles = sortedPoles;
     end
 
-    
     poles(i,:) = sortedPoles;
 end
 
-abs(poles)
-
+poles'
 %% POST-PROCESSING
 xCircle = 1.005*cos(0:pi/180:2*pi)/(2*pi); 
 yCircle = 1.005*sin(0:pi/180:2*pi)/(2*pi);
