@@ -4,6 +4,7 @@ folders = {'aerodynamics'
            'analysis-results'
            'control'
            'model'
+           'export_fig'
             };
 		
 for i=1:length(folders)

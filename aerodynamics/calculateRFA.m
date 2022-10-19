@@ -8,7 +8,7 @@ SetPaths;
 % Analysis Configuration
 plotar = 1;
 salvar = 1;
-fileNameSaving  = '/home/francafilipe/Desktop/Research/scripts/flutter_suppression/data-results/RFA_Airfoil2DOF.mat';
+fileNameSaving  = 'C:\Users\filip\Downloads\TCC & Research\flutter_suppression\data-results\RFA_Airfoil2DOF.mat';
 % fileNameLoading = '/home/francafilipe/Desktop/Research/scripts/flutter_suppression/data-results/AIC.mat';
 
 % Inputs & Model Parameters
@@ -64,36 +64,41 @@ if plotar
     
     % Plot modes (or DOF) RFAs and AICs for each reduced frequency
     figure(1)
-    tiledlayout(nDOF,nDOF, 'TileSpacing', 'compact')
-
+    % tiledlayout(nDOF,nDOF, 'TileSpacing', 'compact')
+    plotID = 1;
     for i=1:nDOF
         for j=1:nDOF
-        nexttile; hold on; box on;
+        subplot(nDOF,nDOF,plotID); hold on; box on;
+        % nexttile; hold on; box on;
         plot(real(Qqq(:,i,j)),imag(Qqq(:,i,j)),'-k','linewidth',1.5)
         plot(real(AIC(:,i,j)),imag(AIC(:,i,j)),'ok','markersize',5.5)
         set(gca,'FontName','cmr12'); set(gca,'FontSize',10)
         xlabel('Real','interpreter','latex','FontSize',12); ylabel('Imag','interpreter','latex','FontSize',12); 
-        tit = ['$Q_{',num2str(i),num2str(j),'}$'];
+        tit = ['$Q_{aero}^{',num2str(i),num2str(j),'}$'];
         title(tit,'interpreter','latex','FontSize',12);
+        plotID = plotID + 1;
         end
     end
     lg = legend('RFA','AIC','interpreter','latex','FontSize',13);
     lg.Orientation = 'horizontal';
-    lg.Layout.Tile = 'North';
+    lg.Location = 'North';
     
     % Plot control RFAs and AICs for each reduced frequency
     figure(2)
-    tiledlayout(1,nDOF, 'TileSpacing', 'compact')
+    % tiledlayout(nDOF,nDOF, 'TileSpacing', 'compact')
+    plotID = 1;
     for j=1:nDOF
-        nexttile; hold on; box on;
+        subplot(2,nDOF,plotID); hold on; box on;
+        % nexttile; hold on; box on;
         plot(real(Qqc(:,j)),imag(Qqc(:,j)),'-k','linewidth',1.5)
         plot(real(AIC(:,j,nDOF+1)),imag(AIC(:,j,nDOF+1)),'ok','markersize',5.5)
         set(gca,'FontName','cmr12'); set(gca,'FontSize',10)
         xlabel('Real','interpreter','latex','FontSize',12); ylabel('Imag','interpreter','latex','FontSize',12); 
         tit = ['$Q_{3',num2str(j),'}$'];
         title(tit,'interpreter','latex','FontSize',12);
+        plotID = plotID + 1;
     end
     lg = legend('RFA','AIC','interpreter','latex','FontSize',13);
     lg.Orientation = 'horizontal';
-    lg.Layout.Tile = 'North';
+    lg.Location = 'North';
 end

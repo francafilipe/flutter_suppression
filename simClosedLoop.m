@@ -52,7 +52,7 @@ xOL = x;
 
 for i=1:k
     % Showing simulation iteration
-    fprintf('Starting %dÂ° iteration\n\n',i);
+    fprintf('Starting %d° iteration\n\n',i);
     
     % Set control action value
     if (i>=tControl/dt && x(1,i)>=0)

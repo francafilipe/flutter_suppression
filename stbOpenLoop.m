@@ -7,19 +7,19 @@ SetPaths;
 %% ANALYSIS CNODITIONS
 % Define flight conditions | analysis points
 fltcond.rho = 0.000044256;          % [lb/in3]  air density
-Voo = [1164];       % [in/s]    undisturbed flow speed
+Voo = [700];       % [in/s]    undisturbed flow speed
 % Voo = [0.1 10:20:1200];
 nVoo = length(Voo);
 
 % Load model parameters
-params = Airfoil2DOF();
+params = load('modal-Goland-Wing-6modes.mat');
 
 % Load aerodynamics and allocate
-load('RFA_Airfoil2DOF.mat');
+load('RFA-Goland-Wing-Ma05-6Modes.mat');
 params.RFAs = RFAs;
 
 % Define poles array
-nPoles = params.nDOF*(2+params.RFAs.nLAG)+3;
+nPoles = params.nDOF*(2+params.RFAs.nLAG);
 poles = zeros(nVoo,nPoles);
 
 for i=1:nVoo
@@ -28,7 +28,7 @@ for i=1:nVoo
     fltcond.qoo = (fltcond.rho*fltcond.Voo^2)/2;
 
     % Calculate Aeroelastic State Space model
-    sys = ssAeroservoelastic(params,fltcond);
+    sys = ssAeroelastic(params,fltcond);
     currPoles = eig(sys.A);
     
     if i==1

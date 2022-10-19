@@ -29,9 +29,10 @@ qoo  = fltcond.qoo;         % dynamic pressure
 
 % Modal matrices
 Mqq = params.Mqq;           % Modal mass matrix (or system mass)
-Dqq = params.Dqq;           % Modal damping matrix
+Dqq = zeros(size(Mqq));           % Modal damping matrix
 Kqq = params.Kqq;           % Modal stiffness
-Mqc = params.Mqc;           % inertial coupling matrix btw the elastic modes and control surface
+% Mqc = params.Mqc;           % inertial coupling matrix btw the elastic modes and control surface
+Mqc = zeros(nDOF,1);
 
 % Aerodynamic approximation matrices
 RFAs = params.RFAs;
@@ -42,7 +43,8 @@ M = Mqq - qoo*RFAs.modal.A2*(b/Voo)^2;
 D = Dqq - qoo*RFAs.modal.A1*(b/Voo);
 K = Kqq - qoo*RFAs.modal.A0;
 
-Mc = Mqc - qoo*RFAs.control.A2*(b/Voo)^2;
+% Mc = Mqc - qoo*RFAs.control.A2*(b/Voo)^2;
+Mc = zeros(nDOF,1);
 
 % dynamic matrix
 A = [   zeros(nDOF,nDOF)     eye(nDOF)       zeros(nDOF,nDOF)          zeros(nDOF,nDOF)          zeros(nDOF,nDOF)          zeros(nDOF,nDOF);
@@ -54,15 +56,18 @@ A = [   zeros(nDOF,nDOF)     eye(nDOF)       zeros(nDOF,nDOF)          zeros(nDO
         ];
 
 % input matrix
-B = [   zeros(nDOF,1)           zeros(nDOF,1)               zeros(nDOF,1);
-   qoo*M\RFAs.control.A0  qoo*(b/Voo)*M\RFAs.control.A1        -M\Mc;
-        zeros(nDOF,1)           RFAs.control.A3             zeros(nDOF,1);
-        zeros(nDOF,1)           RFAs.control.A4             zeros(nDOF,1);
-        zeros(nDOF,1)           RFAs.control.A5             zeros(nDOF,1);
-        zeros(nDOF,1)           RFAs.control.A6             zeros(nDOF,1)       ];
+% B = [   zeros(nDOF,1)           zeros(nDOF,1)               zeros(nDOF,1);
+%    qoo*M\RFAs.control.A0  qoo*(b/Voo)*M\RFAs.control.A1        -M\Mc;
+%         zeros(nDOF,1)           RFAs.control.A3             zeros(nDOF,1);
+%         zeros(nDOF,1)           RFAs.control.A4             zeros(nDOF,1);
+%         zeros(nDOF,1)           RFAs.control.A5             zeros(nDOF,1);
+%         zeros(nDOF,1)           RFAs.control.A6             zeros(nDOF,1)       ];
+
+B = zeros(length(A),1);
 
 % output matrix
-C = [ones(1,2*nDOF) zeros(1,nDOF*nLAG)].*eye(nDOF*(nDOF+nLAG));
+% C = [ones(1,2*nDOF) zeros(1,nDOF*nLAG)].*eye(nDOF*(nDOF+nLAG));
+C = eye(length(A));
 
 % feedforward matrix
 D = zeros(size(B));
