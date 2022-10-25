@@ -1,0 +1,295 @@
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% Trabalho de Graduação p/ o Curso de Engenharia Aeronáutica, UFU
+% Autor: Filipe Guilherme Faria França
+% Revisão: Prof. Dr. Pedro Assis
+% O presente modelo foi obtido a partir do modelo desenvolvido por Alisson Lopes Furlani disponível na BU/UFSC.
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+
+\documentclass[
+12pt,				% tamanho da fonte
+%openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+oneside,			% para impressão no anverso. Oposto a twoside
+a4paper,			% tamanho do papel. 
+chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+% -- opções do pacote babel --
+english,			% idioma adicional para hifenização
+brazil				% o último idioma é o principal do documento
+]{abntex2}
+
+\usepackage{configs/eca_ufsc_bnu} % personalização da ABNTEX2
+\addbibresource{pos_textual/referencias.bib} % Seus arquivos de referências
+\nocite{*} % Cita todas as referências
+
+%---------------------------------------------------------------------------------------------
+%--------- DADOS BÁSICOS DO TCC (Preencher todos) -------------------------------------
+%---------------------------------------------------------------------------------------------
+%Substituir 'Nome completo do autor' pelo seu nome.
+\autor{Filipe Guilherme Faria França}
+% FIXME Substituir 'Título do trabalho' pelo título da trabalho.
+\titulo{IMPLEMENTAÇÃO DE CONTROLE ATIVO PARA SUPRESSÃO DE \textit{FLUTTER} DE UMA SEÇÃO TÍPICA BIDIMENSIONAL}
+% Substituir 'Subtítulo (se houver)' pelo subtítulo da trabalho. 
+% Se não houver subtítulo, basta deletar o texto.
+\subtitulo{}
+% Substituir 'Orientador' pelo nome do seu orientador.
+\orientador{Prof. Dr. Pedro Augusto Queiroz de Assis}
+% Se for orientado por uma mulher, comente a linha acima e descomente a linha a seguir.
+% \orientador[Orientadora]{Orientadora, Dra.}
+% Substituir 'XXXXXX' pelo nome do seu  coorientador. Caso não tenha coorientador, comente a linha a seguir.
+% \coorientador{Prof. Coorientador, Dr.}
+% Se for coorientado por uma mulher, comente a linha acima e descomente a linha a seguir.
+% \coorientador[Coorientadora]{Coorientadora, Dra.}
+\dia{11}
+\mes{Outubro}
+\ano{2022}
+\local{Uberlândia}
+\formacao{Bacharel em Engenharia Aeronáutica}
+% Se for mulher, comente a linha acima e descomente a linha a seguir.
+%\formacao{Engenheira de Controle e Automação}
+\bancaa{Prof. Dr. Pedro Augusto Queiroz de Assis} %Primeiro membro da banca (normalmente o orientador).
+\bancab{Prof. Dr. Tobias Souza Morais} %Segundo membro da banca
+\bancac{Prof. Dr. Roberto de Souza Martins} %Terceiro membro da banca
+
+%Resumo e palavras-chave do trabalho
+\resumotcc{Será apresentada uma metodologia para projeto de um sistema de controle ativo para supressão de \textit{flutter} em sistemas aeroservoelásticos. \textit{Flutter} é um fenômeno de instabilidade aeroelástica dinâmica, cujo movimento oscilatório apresenta auto-excitação devido ao acoplamento dinâmico entre dois modos elásticos quaisquer do sistema. Essa instabilidade ocorre a partir de uma determinada velocidade, denominada velocidade de \textit{flutter}, em que as oscilações se tornam divergentes em relação a posição de equilíbrio do sistema, configurando um movimento instável. Devido à característica destrutiva do \textit{flutter}, são adotadas restrições de projeto para impedir que a velocidade de \textit{flutter} esteja dentro do envelope de operações. Mesmo em operações em velocidades inferiores a de \textit{flutter}, porém suficientemente próximas, podem ocorrer prejuízos ao desempenho de voo devido à elevada vibração da estrutura. Para mitigar os efeitos desse fenômeno no projeto e operação de aeronaves, pode ser adotado um sistema ativo de supressão de \textit{flutter}, que consiste em projetar uma lei de controle para atuar sobre o sistema regulando a vibração da estrutura com o objetivo de suprimir o \textit{flutter}. É nesse contexto que o presente trabalho se encaixa: Desenvolver um \glsxtrfull{AFS} para uma seção transversal de asa bidimensional com uma superfície de controle do tipo \textit{flap} no bordo de fuga. Para modelagem do sistema, os esforços aerodinâmicos dependentes da frequência reduzida são descritos empregando uma técnica conhecida como \glsxtrfull{RFA}, sendo considerados quatro polos de atraso para representar os efeitos não-estacionários da aerodinâmica. O modelo matemático é descrito utilizando uma representação no espaço de estados e então, adotado para projetar um controlador por realimentação de estados. Em particular, adotou-se a metodologia do \glsxtrfull{LQR} para projeto do ganho de realimentação de estados. Resultados de simulação mostraram uma velocidade de \textit{flutter} de $29,59$ m/s para o sistema estudado, um erro percentual de apenas $2\%$ em relação ao valor referência encontrado na literatura, indicando adequação da metodologia para modelagem no domínio do tempo realizada. Ademais, foram obtidos resultados que evidenciam a capacidade da estrutura em malha fechada proposta em estabilizar o sistema na condição de projeto, determinada como sendo o ponto de instabilidade dinâmica do sistema em malha aberta. Como consequência, também percebe-se o aumento da velocidade de \textit{flutter} do sistema em malha fechada, apesar de não haver garantia teórica para isso.
+}
+\palavraschave{Aeroelasticidade; Supressão ativa de \textit{flutter}; Análise no domínio do tempo; Aproximação da aerodinâmica não-estacionária por funções racionais}
+
+%Abstract e keywords do trabalho
+\abstracttcc{A design methodology for an active control system used to suppress \textit{flutter} in aeroservoelastic systems is presented. \textit{Flutter} is a dynamic aeroelastic instability phenomenon, whose oscilatory motion presents self-excitation due to the dynamic coupling between any two elastic modes of the system. This instability occurs from a certain velocity, called the \textit{flutter} velocity, in which the oscillations become divergent from the equilibrium point of the system, featuring an unstable movement. Due to the destructive characteristic of \textit{flutter}, design restrictions are adopted to prevent the \textit{flutter} velocity from being within the operational envelope. Even in operations at speeds below \textit{flutter}, but close enough, damage to flight performance may occur due to high vibration of the structure. To mitigate the effects of this phenomenon on aircraft design and operation, an active flutter suppression system can be adopted, which consists of designing a control law to act on the system by regulating the structure's vibration in order to suppress the \textit{ flutter}. It is in this context that the present work fits: Develop a \gls{AFS} for a two-dimensional wing cross section with a control surface located on the section's trailing edge. A technique known as \gls{RFA} is used to describe the reduced frequency-dependent aerodynamic loads in the time domain, in which four delay poles are assumed to represent the nonstationary effects of the aerodynamics. The mathematical model is described using a state-space representation. The control system was designed using this model via quadratic linear regulator methodology to design the state feedback gain. The estimated \textit{flutter} velocity for the studied system is found to be $29,59$ m/s, which indicates a percentage error of $2\%$ when compared to values from literature, showing the adequacy of the methodology implemented. Furthermore, the results obtained shows the ability of the proposed closed-loop structure to stabilize the system in the design condition, determined as the point of dynamic instability of the open-loop system. As a consequence, it can also be seen an increase in the \textit{flutter} speed of the closed-loop system, although there is no theoretical guarantee for this.}
+\keywords{Aeroelasticity; Active \textit{flutter} suppression; Time-domain analysis; Rational Function Approximation of Aerodynamics}
+
+%Agradecimentos (opcional). Caso não queira inserir, deixe em branco (\agradecimentostcc{} )
+\agradecimentostcc{Primeiramente, gostaria de agradecer à minha família pelo suporte e amor proporcionado, especialmente aos meus pais, Ronaldo e Alessandra, por sempre me apoiarem durante as fases de descobrimento pessoal e profissional, e por me oferecerem o privilégio de me dedicar integralmente aos meus estudos.
+
+Agradeço imensamente ao meu professor orientador Pedro Assis, pela orientação durante o desenvolvimento desse trabalho e pelo contato em sala de aula, partes fundamentais para que o projeto atingisse o nível desejado e em meu desenvolvimento como pesquisador.
+
+À Universidade Federal de Uberlândia e à Faculdade de Engenharia Mecânica, expresso minha gratidão por proporcionarem o ambiente de formação em alto nível de qualidade, demonstrando a importância e necessidade da educação pública para o desenvolvimento do nosso país. Destaco o trabalho do professor e coordenador do curso de Engenharia Aeronáutica, Giuliano Venson, pelo suporte durante toda minha formação, disposto a tirar dúvidas e auxiliar como pôde nos processos internos, sempre tendo a formação dos estudantes como prioridade.
+
+Gostaria de agradecer profundamente à equipe Tucano Aerodesign por proporcionar o meio no qual me tornei engenheiro. As dificuldades no desenvolvimento de projeto, os desafios a serem superados e as noites sem dormir construindo aeronaves junto de meus colegas de equipe, foram, sem dúvida, os momentos de maior aprendizado durante a graduação. Destaco aos membros integrantes das equipes de 2019, 2020 e 2022, por terem feito parte de minha jornada e me ajudado a crescer como engenheiro. Também agradeço ao professor orientador, Tobias Morais, por ter sido uma referência de engenharia aeronáutica durante toda minha graduação, sendo como orientador dos projetos de aerodesign, em sala de aula e na coorientação desse trabalho.
+
+Também expresso meus sinceros agradecimentos a todos os amigos que Uberlândia me proporcionou e que fizeram dessa jornada uma experiência de vida, cheia de risadas, emoções e momentos inesquecíveis. Obrigado Aila Agostinho, Daniel Willbergher, Dimas Silvério, Guilherme Miyadaira, Lucas Alves, Lucas Cunha, Lucas Lutffalla e Luís Moura. Particularmente, agradeço à Amanda Leite, por trilhar ao meu lado essa jornada, sendo meu alicerce e fazendo dos dias felizes mais felizes e dos tristes suportáveis.
+}
+
+%Epígrafe (opcional). Caso não queira inserir, deixe em branco (\epigrafetcc{} )
+\epigrafetcc{“Essencialmente, todos os modelos estão errados, \\ mas alguns são úteis.” (George E. P. Box)}
+
+%Decatória (opcional). Caso não queira inserir, deixe em branco (\dedicatoriatcc{} )
+\dedicatoriatcc{}
+
+%Lista de quadros
+%Além de figuras e tabelas, o TCC contém quadros? Caso afirmativo digite sim ou deixe em branco para não (\contemquadros{}).
+\contemquadros{}
+
+%Lista de siglas (opcional).
+%Deseja incluir lista de abreviaturas e siglas? Caso afirmativo digite sim ou deixe em branco para não (\contemsiglas{}).
+\contemsiglas{sim}
+
+%Lista de símbolos (opcional).
+%Deseja incluir lista de símbolos? Caso afirmativo digite sim ou deixe em branco para não (\contemsimbolos{}).
+\contemsimbolos{sim}
+
+%-------------------------FIM DOS DADOS BÁSICOS DO TCC--------------------------------------------
+
+% ajusta espaçamento das listas itemize e enumerate
+\setitemize{topsep=0pt,itemsep=0pt,leftmargin=\parindent+\labelwidth-\labelsep}
+\setenumerate{topsep=0pt,itemsep=0pt,leftmargin=\parindent+\labelwidth-\labelsep}
+
+% define a macro \Autoref to allow multiple references to be passed to \autoref
+\makeatletter
+\newcommand\Autoref[1]{\@first@ref#1,@}
+\def\@throw@dot#1.#2@{#1}% discard everything after the dot
+\def\@set@refname#1{%    % set \@refname to autoefname+s using \getrefbykeydefault
+	\edef\@tmp{\getrefbykeydefault{#1}{anchor}{}}%
+	\xdef\@tmp{\expandafter\@throw@dot\@tmp.@}%
+	\ltx@IfUndefined{\@tmp autorefnameplural}%
+	{\def\@refname{\@nameuse{\@tmp autorefname}s}}%
+	{\def\@refname{\@nameuse{\@tmp autorefnameplural}}}%
+}
+\def\@first@ref#1,#2{%
+	\ifx#2@\autoref{#1}\let\@nextref\@gobble% only one ref, revert to normal \autoref
+	\else%
+	\@set@refname{#1}%  set \@refname to autoref name
+	\@refname~\ref{#1}% add autoefname and first reference
+	\let\@nextref\@next@ref% push processing to \@next@ref
+	\fi%
+	\@nextref#2%
+}
+\def\@next@ref#1,#2{%
+	\ifx#2@ e~\ref{#1}\let\@nextref\@gobble% at end: print e+\ref and stop
+	\else, \ref{#1}% print  ,+\ref and continue
+	\fi%
+	\@nextref#2%
+}
+\makeatother
+
+% Cria comando para referenciar Anexo automaticamente \refanexo
+\newcommand{\refanexo}[1]{\hyperref[#1]{Anexo~\ref{#1}}}
+
+% Define comandos para tabelas que permite ajustar o tamanho da coluna e manter alinhamento C, R ou L
+%\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\centering\let\arraybackslash}m{#1}}
+\newcolumntype{R}[1]{>{\RaggedLeft\let\arraybackslash}m{#1}}
+\newcolumntype{L}[1]{>{\RaggedRight\let\arraybackslash}m{#1}}
+
+
+% ---
+% Filtering and Mapping Bibliographies
+% ---
+\DeclareSourcemap{
+	\maps[datatype=bibtex]{
+		% remove fields that are always useless
+		\map{
+			\step[fieldset=abstract, null]
+			\step[fieldset=pagetotal, null]
+			\step[fieldset=doi, null]
+		}
+		% remove URLs for types that are primarily printed
+		\map{
+			\pernottype{software}
+			\pernottype{online}
+			\pernottype{report}
+			\pernottype{techreport}
+			\pernottype{standard}
+			\pernottype{manual}
+			\pernottype{misc}
+			\step[fieldset=url, null]
+			\step[fieldset=urldate, null]
+		}
+		\map{
+			\pertype{inproceedings}
+			% remove mostly redundant conference information
+			%\step[fieldset=venue, null]
+			%\step[fieldset=eventdate, null]
+			%\step[fieldset=eventtitle, null]
+			% do not show ISBN for proceedings
+			\step[fieldset=isbn, null]
+			% Citavi bug
+			%\step[fieldset=volume, null]
+		}
+	}
+}
+% ---
+
+\preambulo
+{%
+	Projeto de Conclusão de Curso apresentado ao curso de Graduação em Engenharia Aeronáutica, da Faculdade de Engenharia Mecânica da Universidade Federal de Uberlândia como requisito para a obtenção~do~título~de~\imprimirformacao.
+}
+% ---
+
+% ---
+% Configurações de aparência do PDF final
+% ---
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+% informações do PDF
+\makeatletter
+\hypersetup{
+	%pagebackref=true,
+	pdftitle={\@title}, 
+	pdfauthor={\@author},
+	pdfsubject={\imprimirpreambulo},
+	pdfcreator={LaTeX with abnTeX2},
+	pdfkeywords={ufu, tcc, flutter, controle}, 
+	colorlinks=true,       		        % false: boxed links; true: colored links
+	linkcolor=black,%blue,          	% color of internal links
+	citecolor=black,%blue,        		% color of links to bibliography
+	filecolor=black,%magenta,      		% color of file links
+	urlcolor=blue,
+	bookmarksdepth=4
+}
+\makeatother
+% ---
+
+% Definição das siglas e símbolos
+\input{pre_textual/siglas_simbolos}
+% compila a lista de abreviaturas e siglas e a lista de símbolos
+\makenoidxglossaries 
+
+% compila o indice
+\makeindex
+
+
+% ------------------------------------------------------------------------------------------------
+% --------------------------INÍCIO DO DOCUMENTO---------------------------------------------
+% ------------------------------------------------------------------------------------------------
+\begin{document}
+	
+	% Seleciona o idioma do documento (conforme pacotes do babel)
+	% \selectlanguage{english}
+	\selectlanguage{brazil}
+	
+	% Retira espaço extra obsoleto entre as frases.
+	\frenchspacing 
+	
+	% Espaçamento 1.5 entre linhas
+	\OnehalfSpacing
+	
+	% Corrige justificação
+	%\sloppy
+	
+
+	%Elementos pré-textuais
+	% \pretextual %a macro \pretextual é acionado automaticamente no início de \begin{document}
+	% Capa, folha de rosto, ficha bibliografica, errata, folha de aprovação
+	% Dedicatória, agradecimentos, epígrafe (opcional), resumos, listas
+	\input{pre_textual/pretextual}
+
+	% Elementos textuais
+	\textual
+	
+	% 1 - Introdução
+	\include{capitulos/cap_1}
+	
+	% 2 - Modelo Aeroelástico
+	\include{capitulos/cap_2}
+	
+	% 3 - Descrição do Sistema de Controle
+	\include{capitulos/cap_3}
+	
+	% 4 - Resultados de Simulação
+	\include{capitulos/cap_4}
+	
+	% 5 - Conclusões
+	\include{capitulos/cap_5}
+
+	% Elementos pós-textuais
+	\postextual
+	
+	
+	% Referências bibliográficas
+	\begingroup
+	    \printbibliography[title=REFERÊNCIAS]
+	\endgroup
+	
+	
+	
+	%Reconfiguração do título para apêndices e anexos
+	 \renewcommand{\ABNTEXchapterupperifneeded}[1]{#1} 
+	\makeatletter
+	\settocpreprocessor{chapter}{%
+      \let\tempf@rtoc\f@rtoc%
+      \def\f@rtoc{%
+      \texorpdfstring{{\tempf@rtoc}}{\tempf@rtoc}}%
+      }
+    \makeatother
+	
+	
+	% Apêndices
+    \begin{apendicesenv}
+    	%\partapendices*
+    	\selectlanguage{brazil}
+    	\input{pos_textual/apendice_a}
+    \end{apendicesenv}
+
+    % Anexos
+    %\begin{anexosenv}
+        %\partanexos*
+    	%\input{pos_textual/anexo_a}
+    %\end{anexosenv}
+
+\end{document}

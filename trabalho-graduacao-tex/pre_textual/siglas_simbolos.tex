@@ -1,0 +1,77 @@
+
+%----------------- LISTA DE ABREVIATURAS E SIGLAS--------------------------------------
+\siglalista{GDL}{Grau de Liberdade}
+\siglalista{GDLs}{Graus de Liberdade}
+\siglalista{AFS}{Supressão ativa de \textit{flutter}, do inglês \textit{Active Flutter Supression}}
+\siglalista{RFA}{Aproximação por Funções Racionais, do inglês \textit{Rational Function Approximation}}
+\siglalista{MIMO}{Múltiplas entradas e múltiplas saídas, do inglês \textit{Multiple-Input Multiple-Output}}
+\siglalista{LQR}{Regulador Linear Quadrático, do inglês \textit{Linear Quadratic Regulator}}
+\siglalista{ZOH}{Segurador de Ordem Zero, do inglês \textit{Zero Order-Holder}}
+\siglalista{ISA}{Atmosfera Internacional Padrão, do inglês \textit{International Standard Atmosphere}}
+\siglalista{FAA}{Administração Federal de Aviação americana, do inglês \textit{Federal Aviation Administration}}
+\siglalista{FEM}{Método dos Elementos Finitos, do inglês \textit{Finite Element Methods}}
+
+%Para usar uma dada sigla ABC ao longo do texto\, use \glsxtrfull{ABC} se quiser apresentar a sigla e sua definição.
+%Se quiser apresentar apenas a sigla\, use \gls{ABC}.
+
+
+%-----------------SÍMBOLOS---------------------------------------------------------------
+\simbololista{h}{\ensuremath{h}}{deslocamento linear vertical\, primeiro \gls{GDL}}
+\simbololista{theta}{\ensuremath{\theta}}{rotação da seção em torno do eixo elástico\, segundo \gls{GDL}}
+\simbololista{delta}{\ensuremath{\delta}}{Deflexão da superfície de controle}
+\simbololista{m}{\ensuremath{m}}{Massa da seção bidimensional}
+\simbololista{b}{\ensuremath{b}}{meia corda da seção típica bidimensional}
+\simbololista{c}{\ensuremath{c}}{corda da seção típica bidimensional}
+\simbololista{a}{\ensuremath{a}}{posição relativa do eixo elástico}
+\simbololista{e}{\ensuremath{e}}{posição relativa do eixo de rotação da superfície de controle}
+\simbololista{Stheta}{\ensuremath{S_{\theta}}}{Momento de massa estática em relação ao eixo elástico}
+\simbololista{Itheta}{\ensuremath{I_{\theta}}}{Momento de inércia em relação ao eixo elástico}
+\simbololista{fGDL}{\ensuremath{f_{r_{k}}}}{Frequência natural desacoplada do \gls{GDL} \ensuremath{r_{k} = \{ h, \theta \} }}
+\simbololista{omegaGDL}{\ensuremath{\omega_{r_{k}}}}{Frequência natural\, em rad\, desacoplada do \gls{GDL} \ensuremath{r_{k} = \{ h, \theta \} }}
+\simbololista{csiGDL}{\ensuremath{\xi_{r_{k}}}}{Amortecimento estrutural do \gls{GDL} \ensuremath{r_{k} = \{ h, \theta \}}}
+\simbololista{SdeltaGDL}{\ensuremath{S_{\delta\,r_{k}}}}{Acoplamento inercial da superfície de controle ao \gls{GDL} \ensuremath{r_{k} = h, \theta}}
+\simbololista{Voo}{\ensuremath{V_{\infty}}}{Velocidade do escoamento não perturbado}
+\simbololista{rho}{\ensuremath{\rho}}{Densidade do ar na região do escoamento não perturbado}
+\simbololista{qoo}{\ensuremath{q_{\infty}}}{Pressão dinâmica do escoamento não perturbado}
+\simbololista{VOLF}{\ensuremath{V_{OLF}}}{Velocidade de \textit{flutter} em malha aberta}
+\simbololista{VCLF}{\ensuremath{V_{CLF}}}{Velocidade de \textit{flutter} em malha fechada}
+\simbololista{VLVI}{\ensuremath{V_{LVI}}}{Velocidade de instabilidade de baixa velocidade em malha fechada}
+\simbololista{M}{\ensuremath{\boldsymbol{M}}}{Matriz de massa do sistema}
+\simbololista{D}{\ensuremath{\boldsymbol{D}}}{Matriz de amortecimento do sistema}
+\simbololista{K}{\ensuremath{\boldsymbol{K}}}{Matriz de rigidez do sistema}
+\simbololista{Mc}{\ensuremath{\boldsymbol{M}_{c}}}{Matriz de acoplamento inercial entre os \gls{GDL}s elásticos e superfície de controle}
+\simbololista{F}{\ensuremath{\boldsymbol{F}}}{Forças aplicadas ao sistema aeroelástico}
+\simbololista{Fa}{\ensuremath{\boldsymbol{F}_{A}}}{Força aerodinâmica devido à deformação estrutural}
+\simbololista{Fc}{\ensuremath{\boldsymbol{F}_{C}}}{Força aerodinâmica devido à deflexão da superfície de controle}
+\simbololista{Fr}{\ensuremath{\boldsymbol{F}_{R}}}{Força de reação devido ao movimento da superfície de controle}
+\simbololista{AICa}{\ensuremath{\boldsymbol{AIC}_{A}}}{Matriz de coeficientes de influência aerodinâmicos referente à deformação estrutural}
+\simbololista{AICc}{\ensuremath{\boldsymbol{AIC}_{c}}}{Matriz de coeficientes de influência aerodinâmicos referente ao movimento da superfície de controle}
+\simbololista{r}{\ensuremath{\boldsymbol{r}}}{Vetor de \gls{GDL}s do sistema aeroelástico}
+\simbololista{k}{\ensuremath{k}}{Frequência reduzida}
+\simbololista{Nx}{\ensuremath{N_{x}}}{Número de estados do modelo em espaço de estados}
+\simbololista{Ny}{\ensuremath{N_{y}}}{Número de variáveis de saída do modelo em espaço de estados}
+\simbololista{NGDL}{\ensuremath{N_{\gls{GDL}}}}{Número de \gls{GDL}s do sistema aeroelástico}
+\simbololista{Nk}{\ensuremath{N_{k}}}{Número de valores de frequência reduzida}
+\simbololista{NL}{\ensuremath{N_{L}}}{Número de termos de atraso da \gls{RFA}}
+\simbololista{pn}{\ensuremath{p_{n}}}{Polo do termo \ensuremath{n} de atraso devido à \gls{RFA}}
+\simbololista{Ai}{\ensuremath{\boldsymbol{A}_{i}}}{Matriz de aproximação \gls{RFA}\, sendo \ensuremath{i = 1,\ 2,\ \cdots,\ N_{L}+2}}
+\simbololista{Xa}{\ensuremath{\boldsymbol{X}_{A,n}}}{Estados de atraso aerodinâmico devido à \gls{RFA}\, sendo \ensuremath{i = 1,\ 2,\ \cdots,\ N_{L}+2}}
+\simbololista{A}{\ensuremath{\boldsymbol{A}}}{Matriz dinâmica do modelo completo em espaço de estados}
+\simbololista{B}{\ensuremath{\boldsymbol{B}}}{Matriz de entrada do modelo completo em espaço de estados}
+\simbololista{C}{\ensuremath{\boldsymbol{C}}}{Matriz de saída do modelo completo em espaço de estados}
+\simbololista{x}{\ensuremath{\boldsymbol{x}}}{Vetor de estados do modelo completo}
+\simbololista{y}{\ensuremath{\boldsymbol{y}}}{Vetor de saída do modelo completo}
+\simbololista{uc}{\ensuremath{u_{c}}}{Entrada comandada do modelo completo como a deflexão desejada da superfície de controle}
+\simbololista{Aae}{\ensuremath{\boldsymbol{A}_{ae}}}{Matriz dinâmica do modelo aeroelástico em espaço de estados}
+\simbololista{Bae}{\ensuremath{\boldsymbol{B}_{ae}}}{Matriz de entrada do modelo aeroelástico em espaço de estados}
+\simbololista{xae}{\ensuremath{\boldsymbol{x}_{ae}}}{Vetor de estados do modelo aeroelástico}
+\simbololista{uae}{\ensuremath{\boldsymbol{u}_{ae}}}{Vetor de entrada do modelo aeroelástico}
+\simbololista{Aac}{\ensuremath{\boldsymbol{A}_{ac}}}{Matriz dinâmica do modelo do atuador em espaço de estados}
+\simbololista{Bac}{\ensuremath{\boldsymbol{B}_{ac}}}{Matriz de entrada do modelo do atuador em espaço de estados}
+\simbololista{Phi}{\ensuremath{\Phi}}{Matriz dinâmica do modelo digital em espaço de estados}
+\simbololista{Gamma}{\ensuremath{\Gamma}}{Matriz de entrada do modelo digital em espaço de estados}
+\simbololista{Wx}{\ensuremath{\boldsymbol{W}_{x}}}{Matriz de peso da dinâmica de resposta no projeto do \gls{LQR}}
+\simbololista{Wu}{\ensuremath{W_{u}}}{Matriz de peso da ação de controle no projeto do \gls{LQR}}
+\simbololista{Gain}{\ensuremath{\boldsymbol{K}}}{Vetor de ganho de realimentação de estados}
+
+%Para usar um dado símbolo SIMB ao longo do texto, use \gls{SIMB}.

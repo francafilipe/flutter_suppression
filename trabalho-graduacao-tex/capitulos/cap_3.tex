@@ -1,0 +1,101 @@
+% ----------------------------------------------------------
+\chapter{Descrição do Sistema de Controle}\label{cap:descricao-controle}
+% ----------------------------------------------------------
+
+O controle do sistema detalhado no Capítulo \ref{cap:modelo} tem como objetivo a supressão do fenômeno do \textit{flutter}, isto é, ativamente reduzir o movimento oscilatório da seção de asa para determinadas velocidades. Com esse propósito, uma realimentação de estados para estabilização do sistema na velocidade de \textit{flutter} é proposta. Uma vantagem dessa estrutura de controle o tratamento sistemático de sistemas do tipo \glsxtrfull{MIMO} \cite{book:Franklin}, como é o caso do objeto de estudo do presente trabalho.
+
+Para o desenvolvimento da lei de controle, assume-se que o vetor de estados é completamente conhecido em todo instante de operação da planta. Dado o modelo desenvolvido no Capítulo \ref{cap:modelo}, o vetor de estados do sistema apresenta parâmetros vindos da aproximação aerodinâmica por funções racionais, que não são mensuráveis na prática. Nesse trabalho, entretanto, não será avaliado o emprego de observadores de estados. Na prática, poder-se-ia adotar um observador de estados para estimar os estados não mensuráveis, caso o par $\left( \boldsymbol{A}, \boldsymbol{C} \right)$ for, pelo menos, detectável.
+
+No presente capítulo será abordado o processo de discretização do modelo no espaço de estados utilizando o método do \glsxtrfull{ZOH} e, posteriormente, são apresentadas as características de desenvolvimento do controlador, elaborando a metodologia de controle ótimo utilizada.
+
+% ----------------------------------------------------------
+
+% ----------------------------------------------------------
+\section{Discretização do modelo em espaço de estados utilizando o método Segurador de Ordem Zero (\textit{ZOH})}\label{sec:discretizacao}
+
+Visando a implementação digital da lei de controle a ser projetada, os efeitos de discretização devem ser considerados no projeto do controlador. Como descrito em \textcite{book:Franklin}, o controlador digital recebe amostras discretizadas da saída da planta e realiza a operação para o cálculo da ação de controle em determinados instantes de tempo. Considerando que a ação de controle será mantida constante entre dois instantes de amostragem consecutivos, é possível representar \eqref{eq:espaco-estados-completo} do seguinte modo:
+
+\begin{equation}\label{eq:DigitalDynamics}
+    \boldsymbol{x}(zT+T) = \boldsymbol{\Phi}\boldsymbol{x}(zT) + \boldsymbol{\Gamma}u_{c}(zT)
+\end{equation}
+
+\noindent em que $z \in \mathbb{Z}$ o índice de tempo discreto. As matrizes dinâmica e de entrada do espaço de estados discreto, respectivamente $\gls{Phi}$ e $\gls{Gamma}$, são definidas a partir das matrizes em tempo contínuo e essas relações podem ser deduzidas conforme apresentado no restante dessa seção.
+
+Como mostrado por \textcite{book:Franklin}, o sistema de equações diferencias de primeira ordem denominado espaço de estados, apresenta uma solução geral na forma
+
+\begin{equation}\label{eq:solucao-ss}
+    \boldsymbol{x}(t) = e^{\boldsymbol{A}(t-t_{0})}\boldsymbol{x}(t_{0}) + \int_{t_{0}}^{t} e^{\boldsymbol{A}(t-\tau)}\boldsymbol{B}u_{c}(\tau) d\tau
+\end{equation}
+
+Tomando a solução para o intervalo entre dois instantes de amostragem consecutivos, pode-se assumir, na expressão acima, $t_{0}=zT$ e $t=zT+T$, sendo $T$ o tempo de amostragem utilizado na discretização do sistema. Realizando a substituição para as variáveis digitais, a solução é reescrita como
+
+\begin{equation}\label{eq:solucao-ss-discreta}
+    \boldsymbol{x}(zT+T) = e^{\boldsymbol{A}T}\boldsymbol{x}(zT) + \int_{0}^{T} e^{\boldsymbol{A}(\eta)}\boldsymbol{B}u_{c}(\eta) d\eta
+\end{equation}
+
+\noindent sendo a substituição de variável para $\eta$ é feita conforme
+
+\begin{equation}\label{eq:substituicao-variavel}
+    \eta = zT + T - \tau
+\end{equation}
+
+Supõe-se que a ação de controle será mantida constante entre os instantes de amostragem consecutivos, ou seja,
+
+\begin{equation}\label{eq:control-zoh}
+    u_{c}(t) = u_{c}(zT), \quad zT \leq t \leq zT+T
+\end{equation}
+
+Dessa forma, a variável de controle pode ser colocada para fora da integral em \eqref{eq:solucao-ss-discreta}, reduzindo a expressão para a forma de equação de diferenças mostrada em \eqref{eq:DigitalDynamics}, sendo as matrizes que definem a representação em espaço de estados discreto calculadas como
+
+\begin{equation}\label{eq:cap3sec1:DigitalDynamicsMatrices}
+    \Phi = e^{\boldsymbol{A}T}; \quad \Gamma = \int_{0}^{T}  e^{\boldsymbol{A}(\eta)}\boldsymbol{B} d\eta
+\end{equation}
+
+A equação que descreve a saída do sistema continuo não apresenta dinâmica associada. Então, o processo de digitalização resulta em expressão similar, salvo a troca da variável de tempo contínuo para digital. Matematicamente, 
+
+\begin{equation}\label{Eq_EspaçoEstados_Discreto_Saida}
+    \boldsymbol{y}(z) = \boldsymbol{C}\boldsymbol{x}(z)
+\end{equation}
+
+% ----------------------------------------------------------
+
+% ----------------------------------------------------------
+\section{Regulador Linear Quadrático  (\textit{LQR})}\label{sec:lqr}
+
+Para o sistema digital definido por \eqref{eq:DigitalDynamics}, deseja-se encontrar a lei de controle $u_{c}$ que minimiza a função de custo quadrática dada por
+
+\begin{equation}\label{eq:CostFunction}
+    \mathcal{J} = \frac{1}{2} \sum_{k=0}^{N} \left[ \boldsymbol{x}^{T}(z)\boldsymbol{W}_{x}\boldsymbol{x}(z) + u_{c}^{T}(z)W_{u}u_{c}(z)  \right]
+\end{equation}
+
+\noindent em que $\gls{Wx} \in \mathbb{R}^{N_{x} \times N_{x}}$ e $\gls{Wu}$ são as matrizes peso das parcelas de variação dos estados e ação de controle, respectivamente. Esses são parâmetros que devem ser definidos de forma a representar a solução de compromisso entre desempenho da resposta em malha fechada desejada e limitação da ação de controle disponível.
+
+É mostrado por \textcite{book:Franklin} que, considerando o sistema linear dado por \eqref{eq:DigitalDynamics}, a lei de controle que minimiza \eqref{eq:CostFunction} é:
+
+\begin{equation}\label{eq:cap3sec2:ControlLaw}
+    u_{c}(z) = -\boldsymbol{K}(z)\boldsymbol{x}(z)
+\end{equation}
+
+\noindent sendo que o ganho $\gls{Gain}(z)$ pode ser calculado como
+
+\begin{equation}\label{eq:Control-Gain}
+    \boldsymbol{K}(z) = \left[ \boldsymbol{W}_{u} + \boldsymbol{\Gamma}^{T}\boldsymbol{S}(z+1)\boldsymbol{\Gamma} \right]^{-1}\boldsymbol{\Gamma}^{T}\boldsymbol{S}(z+1)\boldsymbol{\Phi}
+\end{equation}
+
+A matriz $\boldsymbol{S}$ é definida no processo de solução do problema de minimização pelo método dos multiplicadores de Lagrange. Em particular, $\boldsymbol{S}$ pode ser calculada a partir da solução da equação de Ricatti,
+
+\begin{equation}\label{eq:Ricatti}
+    \boldsymbol{S}(z) - \boldsymbol{\Phi}^{T} \left[ \boldsymbol{S}(z+1) - \boldsymbol{S}(z+1)\boldsymbol{\Gamma}\left( \boldsymbol{W}_{x} + \boldsymbol{\Gamma}^{T}\boldsymbol{S}(z+1)\boldsymbol{\Gamma} \right)\boldsymbol{\Gamma}^{T}\boldsymbol{S}(z+1) \right]\boldsymbol{\Phi} - \boldsymbol{W}_{x} = \boldsymbol{0}
+\end{equation}
+
+A expressão apresenta em \eqref{eq:Ricatti} representa uma equação de diferenças reversa para determinação de $\boldsymbol{S}(z+1)$. Para problemas de tempo infinito de operação, denominado como regulador, a solução de  \eqref{eq:Control-Gain} e \eqref{eq:Ricatti} é dada em regime permanente como
+
+\begin{equation}\label{eq:cap3sec2:GainLQR}
+    \boldsymbol{z} = \left[ \boldsymbol{W}_{u} + \boldsymbol{\Gamma}^{T}\boldsymbol{S}_{\infty}\boldsymbol{\Gamma} \right]^{-1}\boldsymbol{\Gamma}^{T}\boldsymbol{S}_{\infty}\boldsymbol{\Phi}
+\end{equation}
+
+\begin{equation}\label{eq:cap3sec2:RicattiLQR}
+    \boldsymbol{S}_{\infty} - \boldsymbol{\Phi}^{T} \left[ \boldsymbol{S}_{\infty} - \boldsymbol{S}_{\infty}\boldsymbol{\Gamma}\left( \boldsymbol{W}_{x} + \boldsymbol{\Gamma}^{T}\boldsymbol{S}_{\infty}\boldsymbol{\Gamma} \right)\boldsymbol{\Gamma}^{T}\boldsymbol{S}_{\infty} \right]\boldsymbol{\Phi} - \boldsymbol{W}_{x} = 0
+\end{equation}
+
+% ----------------------------------------------------------

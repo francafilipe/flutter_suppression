@@ -1,0 +1,412 @@
+% Arquivo de configurações para o modelo de TCC do curso de Eng. de Controle e Automação
+% UFSC/Campus Blumenau
+% Autor: Ciro André Pitz
+% Revisão: Brenda Teresa Porto de Matos
+% O presente modelo foi obtido a partir do modelo desenvolvido por Alisson Lopes Furlani disponível na BU/UFSC.
+
+
+
+% Pacotes principais
+\RequirePackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\RequirePackage{lmodern}
+\RequirePackage{lscape}
+\RequirePackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\RequirePackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\RequirePackage{color}				% Controle das cores
+\RequirePackage{graphicx}			% Inclusão de gráficos
+\RequirePackage[factor=1100,stretch=10,shrink=10]{microtype} 			% para melhorias de justificação
+\RequirePackage{pdfpages} 			% Incluir páginas em PDF
+\RequirePackage{textcase}			%Maiúsculas e minúsculas
+\RequirePackage{csquotes}			% Quotation
+\RequirePackage{caption} 			% Necessário para o pacote longtable
+\RequirePackage{subcaption}
+\RequirePackage{longtable}			%Permite inserir tabelas grandes
+\RequirePackage[usestackEOL]{stackengine}
+\RequirePackage{lipsum}
+\RequirePackage{icomma}
+\RequirePackage{physics}
+\RequirePackage[%
+			toc=false,
+			subentrycounter,
+			seeautonumberlist,
+			nonumberlist,
+			nogroupskip,
+			nomain,
+			shortcuts,  
+			acronym, 
+			translate=babel,
+			nopostdot 
+]{glossaries-extra}
+\RequirePackage{amsmath}       	%Expressões matemáticas
+\RequirePackage{amssymb}		%Símbolos matemáticos
+\RequirePackage{url} 					%Pacote de link
+\urlstyle{same}
+
+% ---
+% Pacotes de citações
+% ---
+\RequirePackage[backend=biber,style=abnt,repeatfields,maxbibnames=9,maxcitenames=3, uniquelist=false, uniquename=full]{biblatex}
+% \RequirePackage{natbib}
+\RequirePackage{url}
+% Ajusta espaçamento entre referências
+\setlength\bibitemsep{\baselineskip}
+% Ajusta textos
+\DeclareFieldFormat{url}{\bibstring{urlfrom}\addcolon\addspace\url{#1}}
+\DefineBibliographyStrings{brazil}{%
+	sineloco     = {\mkbibemph{S\adddot l\adddot}},%
+	sinenomine   = {\mkbibemph{s\adddot n\adddot}},%
+	andothers    = {\mkbibemph{et\addabbrvspace al\adddot}},%
+	involumes    = {\mkbibemph{In}},%
+	in           = {\mkbibemph{In}},%
+	inseries     = {\mkbibemph{In}}
+}
+
+% Ajusta citação do mesmo autor e ano (repete ano junto com etiqueta, ao contrário de somente apresentar etiqueta)
+\renewbibmacro*{cite}{% >>>3
+	\iffieldundef{shorthand}%
+	{\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}%
+		{\usebibmacro{cite:label}%
+			\setunit{\printdelim{nonameyeardelim}}%
+			\usebibmacro{cite:labeldate+extradate}%
+			\usebibmacro{cite:reinit}}%
+		{\iffieldequals{namehash}{\cbx@lasthash}%
+			{\ifthenelse{\iffieldequals{labelyear}{\cbx@lastyear}\AND%
+					\(\value{multicitecount}=0\OR\iffieldundef{postnote}\)}%
+				{\setunit{\compcitedelim}%\setunit{\addcomma}% CHANGED
+					\usebibmacro{cite:labeldate+extradate}}%\usebibmacro{cite:extradate}}% CHANGED
+			{\setunit{\compcitedelim}%
+				\usebibmacro{cite:labeldate+extradate}%
+				\savefield{labelyear}{\cbx@lastyear}}}%
+		{% Use `bibhyperref` for the `labelname`
+			\printtext[bibhyperref]{\printnames{labelname}}%
+			\setunit{\printdelim{nameyeardelim}}%
+			\usebibmacro{cite:labeldate+extradate}%
+			\savefield{namehash}{\cbx@lasthash}%
+			\savefield{labelyear}{\cbx@lastyear}}}}%
+{\usebibmacro{cite:shorthand}%
+	\usebibmacro{cite:reinit}}%
+\setunit{\multicitedelim}}% <<<3
+
+
+% Muda equação para 'Equação (n)'
+\counterwithout{equation}{chapter}
+\let\origtheequation\theequation
+\makeatletter
+\def\tagform@#1{\maketag@@@{\ignorespaces#1\unskip\@@italiccorr}}
+\makeatother
+\renewcommand{\theequation}{(\origtheequation)}
+\providecommand*{\equationautorefnameplural}{Equações}
+
+
+% Configura o tamanho das fontes matemáticas
+\DeclareMathSizes{12}{12}{10}{7}
+
+% Retira o espaço do pacote glossaries
+\renewcommand{\glossarypreamble}{\vspace{-0.2cm}} 
+
+% Criação de estilo
+\newglossarystyle{mylong1}{% modificado de https://tex.stackexchange.com/a/166209/151962
+\setglossarystyle{long}%
+\renewenvironment{theglossary}%
+{\begin{longtable*}[l]{@{}p{\dimexpr 3.0cm-\tabcolsep}p{0.78\hsize}}}% <-- change the value here
+	{\end{longtable*}}%
+}
+
+% Só um pequeno recuo em relação ao primeiro
+\newglossarystyle{mylong2}{% modificado de https://tex.stackexchange.com/a/166209/151962
+\setglossarystyle{long}%
+\renewenvironment{theglossary}%
+{\begin{longtable*}[l]{@{}p{\dimexpr 2.0cm-\tabcolsep}p{0.86\hsize}}}% <-- change the value here
+	{\end{longtable*}}%
+}
+
+
+\newcommand{\siglalista}[2]{\newacronym{#1}{#1}{#2}} 
+
+\newglossary{simbolos}{simbolos}{sbl}{simbolos}
+
+\newcommand{\simbololista}[3]{\newglossaryentry{#1}{%
+	type=simbolos, 
+	name=#2, 
+	description=#3}}
+
+\newglossary{glossario}{glossario}{glo}{glossario}		
+\newcommand{\glossariolista}[2]{\newglossaryentry{#1}{%
+		type=glossario, 
+		name=#1, 
+		description=#2}}
+
+
+% imprime lista de siglas em ordem alfabética
+\newcommand{\imprimirlistadesiglas}{%
+\pdfbookmark[0]{\listadesiglasname}{acn}	
+\printnoidxglossary[
+style=mylong1,
+type=acronym,
+sort=letter,
+title={\listadesiglasname}
+]
+\cleardoublepage
+}
+
+% imprime lista de simbolos na ordem de aparição
+\newcommand{\imprimirlistadesimbolos}{%
+\pdfbookmark[0]{\listadesimbolosname}{sbl}
+\printnoidxglossary[
+style=mylong2,
+type=simbolos, 
+sort=use,
+title={\listadesimbolosname}
+]
+\cleardoublepage
+}
+
+% imprime glossário
+\newcommand{\imprimirglossario}{
+	\cleardoublepage
+	\pdfbookmark[0]{\glossaryname}{glo}	
+	\printnoidxglossary[
+	style=mylong1,
+	type=glossario, 
+	sort=use,
+	title={\glossaryname}
+	]
+}
+
+% Section maíusculo inclusive no sumário
+\makeatletter
+\let\oldcontentsline\contentsline
+\def\contentsline#1#2{%
+\expandafter\ifx\csname l@#1\endcsname\l@section
+\expandafter\@firstoftwo
+\else
+\expandafter\@secondoftwo
+\fi
+{%
+	\oldcontentsline{#1}{\MakeTextUppercase{#2}}%
+}{%
+	\oldcontentsline{#1}{#2}%
+}%
+}
+\makeatother
+
+% Cria comandos
+\newcommand{\ifnotempty}[2]{\ifthenelse{\not\equal{#1}{}}{#2}{}}
+\newcommand{\ifnotdefined}[3]{\ifdefined #1 #3 \else #2 \fi}
+
+% Comandos de dados - programa
+\providecommand{\imprimirsubtitulo}{}
+\newcommand{\subtitulo}[1]{\renewcommand{\imprimirsubtitulo}{#1}}
+
+\providecommand{\imprimirformacao}{}
+\newcommand{\formacao}[1]{\renewcommand{\imprimirformacao}{#1}}
+
+\providecommand{\imprimirdia}{}
+\newcommand{\dia}[1]{\renewcommand{\imprimirdia}{#1}}
+
+\providecommand{\imprimirmes}{}
+\newcommand{\mes}[1]{\renewcommand{\imprimirmes}{#1}}
+
+\providecommand{\imprimirano}{}
+\newcommand{\ano}[1]{\renewcommand{\imprimirano}{#1}}
+
+\providecommand{\imprimirbancaa}{}
+\newcommand{\bancaa}[1]{\renewcommand{\imprimirbancaa}{#1}}
+
+\providecommand{\imprimirbancab}{}
+\newcommand{\bancab}[1]{\renewcommand{\imprimirbancab}{#1}}
+
+\providecommand{\imprimirbancac}{}
+\newcommand{\bancac}[1]{\renewcommand{\imprimirbancac}{#1}}
+
+\providecommand{\imprimirresumotcc}{}
+\newcommand{\resumotcc}[1]{\renewcommand{\imprimirresumotcc}{#1}}
+
+\providecommand{\imprimirpalavraschave}{}
+\newcommand{\palavraschave}[1]{\renewcommand{\imprimirpalavraschave}{#1}}
+
+\providecommand{\imprimirabstracttcc}{}
+\newcommand{\abstracttcc}[1]{\renewcommand{\imprimirabstracttcc}{#1}}
+
+\providecommand{\imprimirkeywords}{}
+\newcommand{\keywords}[1]{\renewcommand{\imprimirkeywords}{#1}}
+
+\providecommand{\imprimiragradecimentostcc}{}
+\newcommand{\agradecimentostcc}[1]{\renewcommand{\imprimiragradecimentostcc}{#1}}
+
+\providecommand{\imprimirepigrafetcc}{}
+\newcommand{\epigrafetcc}[1]{\renewcommand{\imprimirepigrafetcc}{#1}}
+
+\providecommand{\imprimirdedicatoriatcc}{}
+\newcommand{\dedicatoriatcc}[1]{\renewcommand{\imprimirdedicatoriatcc}{#1}}
+
+\providecommand{\verificaquadros}{}
+\newcommand{\contemquadros}[1]{\renewcommand{\verificaquadros}{#1}}
+
+\providecommand{\verificasiglas}{}
+\newcommand{\contemsiglas}[1]{\renewcommand{\verificasiglas}{#1}}
+
+\providecommand{\verificasimbolos}{}
+\newcommand{\contemsimbolos}[1]{\renewcommand{\verificasimbolos}{#1}}
+
+\addto\captionsbrazil{
+%% ajusta nomes padroes do babel
+\renewcommand{\bibname}{Referências}
+\renewcommand{\indexname}{Índice}
+\renewcommand{\listfigurename}{Lista de figuras}
+\renewcommand{\listtablename}{Lista de tabelas}
+\renewcommand{\orientadorname}{Orientador}
+\renewcommand{\coorientadorname}{Coorientador}
+%% ajusta nomes usados com a macro \autoref
+\renewcommand{\pageautorefname}{página}
+\renewcommand{\sectionautorefname}{Seção}
+\renewcommand{\subsectionautorefname}{Seção}
+\renewcommand{\paragraphautorefname}{Seção}
+\renewcommand{\subsubsectionautorefname}{Seção}
+}
+
+% Posiciona figuras e tabelas no topo da página quando adicionadas sozinhas em um página em branco. 
+\makeatletter
+\setlength{\@fptop}{5pt} % Set distance from top of page to first float
+\makeatother
+
+
+% Possibilita criação de Quadros e Lista de quadros.
+\newcommand{\quadroname}{Quadro}
+\newcommand{\listofquadrosname}{Lista de quadros}
+\newfloat[chapter]{quadro}{loq}{\quadroname}
+\newlistof{listofquadros}{loq}{\listofquadrosname}
+\newlistentry{quadro}{loq}{0}
+% configurações para atender às regras da ABNT
+\setfloatadjustment{quadro}{\centering}
+\counterwithout{quadro}{chapter}
+\renewcommand{\cftquadroname}{\quadroname\space} 
+\renewcommand*{\cftquadroaftersnum}{\hfill--\hfill}
+\setfloatlocations{quadro}{hbtp} 
+
+
+% Espaçamentos entre linhas e parágrafos 
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.25cm}
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.0cm}  % tente também \onelineskip
+% Espaçamento depois do título
+\setlength{\afterchapskip}{\onelineskip}%{11pt}%{0.38cm}
+% Recuo citação 
+\setlength{\ABNTEXcitacaorecuo}{3cm} %4, mas abntex2 está somando 1cm 
+
+
+% Fontes dos títulos e seções
+% Fontes padroes de part, chapter, section, subsection e subsubsection
+\renewcommand{\ABNTEXchapterfont}{\rmfamily\fontseries{bx}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXchapterfontsize}{\normalsize\selectfont\bfseries}
+\renewcommand{\ABNTEXpartfont}{\rmfamily\fontseries{bx}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXpartfontsize}{\Huge\selectfont\bfseries}
+\renewcommand{\ABNTEXsectionfont}{\rmfamily\fontseries{m}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXsectionfontsize}{\normalsize\selectfont}
+\renewcommand{\ABNTEXsubsectionfont}{\rmfamily\fontseries{b}\fontshape{n}\selectfont}
+\renewcommand{\ABNTEXsubsectionfontsize}{\normalsize\selectfont\bfseries}
+\renewcommand{\ABNTEXsubsubsectionfont}{\rmfamily\fontseries{m}\fontshape{it}\selectfont}
+\renewcommand{\ABNTEXsubsubsectionfontsize}{\normalsize\selectfont}
+\renewcommand{\ABNTEXsubsubsubsectionfont}{\rmfamily\fontseries{m}\selectfont}
+\renewcommand{\ABNTEXsubsubsubsectionfontsize}{\normalsize\selectfont}
+% Tamanho da fonte para a epígrafe UFSC
+%\expandafter\def\expandafter\epigrafe\expandafter{\epigrafe\ABNTEXfontereduzida}
+
+% Sumários
+\setlength{\cftbeforechapterskip}{0pt}
+
+\renewcommand{\cftpartfont}{\ABNTEXpartfont}
+\renewcommand{\cftpartpagefont}{\cftpartfont}
+
+\renewcommand{\cftchapterfont}{\ABNTEXchapterfont}
+\renewcommand{\cftchapterpagefont}{\cftchapterfont}
+
+\renewcommand{\cftsectionfont}{\ABNTEXsectionfont}
+\renewcommand{\cftsectionpagefont}{\cftsectionfont}
+
+\renewcommand{\cftsubsectionfont}{\ABNTEXsubsectionfont}
+\renewcommand{\cftsubsectionpagefont}{\cftsubsectionfont}
+
+\renewcommand{\cftsubsubsectionfont}{\ABNTEXsubsubsectionfont}
+\renewcommand{\cftsubsubsectionpagefont}{\cftsubsubsectionfont}
+
+\renewcommand{\cftparagraphfont}{\ABNTEXsubsubsubsectionfont}
+\renewcommand{\cftparagraphpagefont}{\cftparagraphfont}
+
+
+\renewenvironment{apendicesenv}{%
+ \PRIVATEapendiceconfig{\apendicename}{\apendicesname}
+ \begin{appendix}
+}{
+ \end{appendix}
+ \setboolean{abntex@apendiceousecao}{false}
+ \bookmarksetup{startatroot}
+}
+
+
+% Impressão da Capa
+\renewcommand{\imprimircapa}
+{%
+\begin{capa}%
+	\OnehalfSpacing
+	%{\fontfamily{lmss}\selectfont
+		\centering   
+		%\vspace*{\baselineskip}
+		%\vbox to 12cm{%
+			\includegraphics[width=1.84cm,keepaspectratio]{configs/UFU_Logo}\par%     
+			%\large
+			\MakeTextUppercase{Universidade Federal de Uberlândia}\par%
+			\MakeTextUppercase{Faculdade de Engenharia Mecânica}\par%
+			%\vfill
+			\vspace*{5\baselineskip}
+			\imprimirautor\par%
+			%\vfill
+			\vspace*{8\baselineskip}
+			\textbf{\imprimirtitulo}%
+			\ifnotempty{\imprimirsubtitulo}{:~\imprimirsubtitulo}\par% 
+			%}    
+		\vfill
+		{%
+			%\large
+			%\includegraphics[width=1.84cm,keepaspectratio]{configs/UFU_Logo}\par%
+			\imprimirlocal\par%
+			\imprimirano\par%
+		}
+		%}
+\end{capa}
+}
+
+
+% Reformata Folha de Rosto
+\makeatletter
+\renewcommand{\folhaderostocontent}
+{%
+\OnehalfSpacing
+\centering   
+\vbox to 10cm{%12
+	\imprimirautor\par% 
+	\vspace*{\fill}
+	\textbf{\imprimirtitulo}%
+	\abntex@ifnotempty{\imprimirsubtitulo}{:~\imprimirsubtitulo}\par% 
+}
+\vspace*{\fill}
+%\vspace*{5cm}%4
+\abntex@ifnotempty{\imprimirpreambulo}{%
+	\begin{adjustwidth*}{8cm}{}%8.5              
+		%\SingleSpacing
+		{\footnotesize
+			\begin{SingleSpace}
+				\imprimirpreambulo\newline%
+				\imprimirorientadorRotulo:~\imprimirorientador\newline%
+%				\abntex@ifnotempty{\imprimircoorientador}{\imprimircoorientadorRotulo:~\imprimircoorientador}%
+			\end{SingleSpace}%
+		}
+	\end{adjustwidth*}
+}
+\vspace*{\fill}
+\imprimirlocal\par% 
+\imprimirano            
+%\vspace*{\baselineskip}
+}
+\makeatother

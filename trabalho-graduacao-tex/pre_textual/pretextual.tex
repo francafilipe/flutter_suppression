@@ -1,0 +1,150 @@
+% Capa
+\imprimircapa
+
+
+% Folha de rosto
+% o * indica que haverá a ficha bibliográfica
+ \imprimirfolhaderosto
+
+% Inserir a ficha bibliografica
+% http://ficha.bu.ufsc.br/
+% \begin{fichacatalografica}
+% 	\includepdf{pre_textual/ficha_catalografica.pdf}
+% \end{fichacatalografica}
+
+% Inserir folha de aprovação
+\begin{folhadeaprovacao}
+	\OnehalfSpacing
+	\centering
+	\imprimirautor\\%
+	\vspace{24pt}		
+	\textbf{\imprimirtitulo}%
+	\ifnotempty{\imprimirsubtitulo}{:~\imprimirsubtitulo}\\%
+	\vspace*{31.5pt}%3\baselineskip
+	\vspace*{\baselineskip}
+	%\begin{minipage}{\textwidth}
+	Este Trabalho de Conclusão de Curso foi julgado adequado para obtenção do Título de ``\imprimirformacao'' e aprovado em sua forma final pelo Curso de Graduação em Engenharia Aeronáutica.\\
+	\vspace{12pt}
+	\imprimirlocal, \imprimirdia~de~\imprimirmes~de~\imprimirano.\\
+	
+	\vspace*{24pt}
+	\textbf{Banca Examinadora:}\\
+	
+	\vspace*{24pt}
+	\assinatura{\OnehalfSpacing \imprimirbancaa }
+	\vspace{6pt}
+	Faculdade de Engenharia Mecânica\\Universidade Federal de Uberlândia
+	
+	\vspace*{24pt}
+	\assinatura{\OnehalfSpacing \imprimirbancab}
+	\vspace{6pt}
+	Faculdade de Engenharia Mecânica\\Universidade Federal de Uberlândia
+	
+	\vspace*{24pt}
+	\assinatura{\OnehalfSpacing \imprimirbancac}
+	\vspace{6pt}
+	Faculdade de Engenharia Mecânica\\Universidade Federal de Uberlândia
+	
+\end{folhadeaprovacao}
+
+% Dedicatória
+\ifnotempty{\imprimirdedicatoriatcc}{
+{\raggedleft\vspace*{\fill}\Longstack[l]{%
+    \imprimirdedicatoriatcc
+}\par
+}
+}
+% APAGAR O BLOCO ACIMA CASO QUEIRA, VOLTAR COM O P
+%\begin{dedicatoria}
+%	\vspace*{\fill}
+%	\noindent
+%	\begin{adjustwidth*}{}{5.5cm} 
+%		\raggedleft       
+%		\imprimirdedicatoriatcc
+%	\end{adjustwidth*}
+%\end{dedicatoria}
+%}
+
+% Agradecimentos
+\ifnotempty{\imprimiragradecimentostcc}{
+\begin{agradecimentos}
+	\imprimiragradecimentostcc
+\end{agradecimentos}
+}
+
+% Epígrafe
+\ifnotempty{\imprimirepigrafetcc}{
+{\raggedleft\vspace*{\fill}\Longstack[l]{%
+    \imprimirepigrafetcc
+}\par
+}
+}
+\pagebreak
+%\begin{epigrafe}
+%	\vspace*{\fill}
+%	\begin{adjustwidth*}{}{5.5cm} 
+%	    \imprimirepigrafetcc
+%    \end{adjustwidth*}
+%\end{epigrafe}
+%}
+
+
+% Resumo
+\setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
+\begin{resumo}
+	%\SingleSpacing
+	\imprimirresumotcc
+	
+	\textbf{Palavras-chave}: \imprimirpalavraschave
+\end{resumo}
+%
+%
+% Abstract
+\selectlanguage{english}
+\ifnotempty{\imprimirabstracttcc}{
+\begin{abstract}
+	%\SingleSpacing
+	\imprimirabstracttcc
+	
+	\textbf{Keywords}: \imprimirkeywords
+\end{abstract}
+}
+\pagebreak
+%
+\selectlanguage{brazil}
+{%hidelinks
+	\hypersetup{hidelinks}
+	
+	% inserir lista de figuras
+	\pdfbookmark[0]{\listfigurename}{lof}
+	\listoffigures*
+	\cleardoublepage
+	
+	% inserir lista de quadros
+%	\ifnotempty{\verificaquadros}{
+%		\pdfbookmark[0]{\listofquadrosname}{loq}
+%		\listofquadros*
+%		\cleardoublepage
+%	}
+	
+	% inserir lista de tabelas
+	\pdfbookmark[0]{\listtablename}{lot}
+	\listoftables*
+	\cleardoublepage
+	
+	% inserir lista de abreviaturas e siglas (devem ser declarados no preambulo)
+	\ifnotempty{\verificasiglas}{
+	\imprimirlistadesiglas
+	}
+	
+	% inserir lista de símbolos (devem ser declarados no preambulo)
+	\ifnotempty{\verificasimbolos}{
+	\imprimirlistadesimbolos
+	}
+	
+	% inserir o sumario
+	\pdfbookmark[0]{\contentsname}{toc}
+	\tableofcontents*
+	\cleardoublepage
+%	
+}%hidelinks
